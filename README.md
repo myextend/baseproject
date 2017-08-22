@@ -1,0 +1,2 @@
+# baseproject
+Base ddd project
