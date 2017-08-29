@@ -7,11 +7,11 @@ namespace Core.CQRS.Commands
 {
     public class CommandDispatcher : ICommandDispatcher
     {
-        private IIoCContainer _context;
+        private readonly IIoCContainer _container;
 
-        public CommandDispatcher(IIoCContainer context)
+        public CommandDispatcher(IIoCContainer container)
         {
-            _context = context;
+            _container = container;
         }
 
         public async Task DispatchAsync<T>(T command) where T : ICommand
@@ -19,7 +19,7 @@ namespace Core.CQRS.Commands
             if (command == null)
                 throw new ArgumentNullException(nameof(command),"Command can not be null.");
 
-            ICommandHandler<T> handler = _context.Resolve<ICommandHandler<T>>();
+            ICommandHandler<T> handler = _container.Resolve<ICommandHandler<T>>();
             await handler.HandleAsync(command);
         }
     }
